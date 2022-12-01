@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
 
-const Modal = ({open,setOpen}) => {
+const Modal = ({open,setOpen}) => (
   <div className={`overlay animated ${ open ? `show` : ``}`}>
   <div className="modal">
     <svg onClick={() => setOpen(false)} height="200" viewBox="0 0 200 200" width="200">
@@ -12,7 +12,7 @@ const Modal = ({open,setOpen}) => {
   </div>
 </div>
 
-}
+);
 
   function App() {
     const [open,setOpen] = React.useState(false);
