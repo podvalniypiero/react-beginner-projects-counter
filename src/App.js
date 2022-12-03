@@ -41,7 +41,7 @@ function App() {
   return (
     <div className="App">
       {
-        success ? (<Success />) : (<Users 
+        success ? (<Success count={invites.length}/>) : (<Users 
           invites={invites}
            onClickInvite={onClickInvite} 
            onChangeSearchValue={onChangeSearchValue} 
