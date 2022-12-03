@@ -29,10 +29,13 @@ body {
       border: 0;
       padding: 15px 30px;
       font-size: 20px;
-      background-color: darken(#ff006e, 3%);
+      background-color: darken(#a1a09a, 3%);
       color: #fff;
       margin-top: 20px;
       cursor: pointer;
+      &:hover {
+        background-color: darken(#bdbcb4, 3%);
+      }
     }
 
     h2 {
