@@ -3,12 +3,13 @@ import './index.scss';
 import { Success } from './Components/Success';
 import { Users } from './Components/Users';
 
-// Тут список пользователей: https://reqres.in/api/users
+// link with list of users json file: https://reqres.in/api/users
 
 function App() {
   const [users, setUsers] = React.useState([]);
   const [isLoading,setLoading] = React.useState(true);
   const [searchValue, setSearchValue] = React.useState('');
+  const [invites,setInvites] = React.useState([]);
 
   React.useEffect(() => {
     fetch('https://reqres.in/api/users')

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const User = ({id,first_name,last_name, email,avatar}) => (
+export const User = ({id,first_name,last_name, email,avatar,onClickInvite,isInvited}) => (
   <li>
     <div>
       <img className="avatar" src={avatar} alt="User" />
@@ -14,7 +14,9 @@ export const User = ({id,first_name,last_name, email,avatar}) => (
         </p>
       </div>
     </div>
-    <img className="action" src="https://cdn-icons-png.flaticon.com/512/1237/1237946.png?w=740&t=st=1670080027~exp=1670080627~hmac=c7b1749ae8ba73af1098ab7e38cb67713188fb73b460a78962955772205cd3df" alt="Action" />
+    <img onClick={onClickInvite} 
+    className="action" 
+    src = { `/assets/${isInvited ? 'minus' : 'plus'}.svg`} alt='Action'/>
   </li>
-  //https://cdn-icons-png.flaticon.com/512/1250/1250731.png?w=740&t=st=1670080275~exp=1670080875~hmac=d03f39805afc6cda8da93f90521dec7fd81136646253698eaf66e213706c8377
+ 
 );
