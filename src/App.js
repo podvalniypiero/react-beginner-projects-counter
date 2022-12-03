@@ -1,59 +1,96 @@
 import './index.scss';
+import React from 'react';
 
 const questions = [
   {
-    title: 'React - это ... ?',
-    variants: ['библиотека', 'фреймворк', 'приложение'],
+    title: 'React - is ... ?',
+    variants: ['a Library', 'a Framework', 'an Application', 'a Philosophy', 'a special template made for JS developers'],
     correct: 0,
   },
   {
-    title: 'Компонент - это ... ',
-    variants: ['приложение', 'часть приложения или страницы', 'то, что я не знаю что такое'],
+    title: 'React Component - is ... ',
+    variants: ['an Application', 'a part of page or application –––– an independent and reusable bits of code', 'a special Library', 'a kind of magic'],
     correct: 1,
   },
-  
+
   {
-    title: 'Что такое JSX?',
+    title: 'What is JSX?',
     variants: [
-      'Это простой HTML',
-      'Это функция',
-      'Это тот же HTML, но с возможностью выполнять JS-код',
+      `That's a simple HTML`,
+      'JSX is a kind of js functions',
+      'JSX is a damaged HTML file',
+      'JSX is an extension of the JavaScript language which provides a way to structure component rendering using syntax similar to HTML',
+      'JSX is an extension of the JavaScript language which provides a way to use React library properly'
     ],
-    correct: 2,
+    correct: 3,
   },
+  {
+    title: 'Why React Hooks are used?',
+    variants: [
+      `React Hooks allow you to assemble your project properly and quickly`,
+      'With Hooks, you can extract stateful logic from a component so it can be tested independently and reused ',
+      'React Hooks make it easy to share components from one project to another'
+      
+    ],
+    correct: 1,
+  }
 ];
 
-function Result() {
+function Result({correct}) {
   return (
     <div className="result">
       <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" />
-      <h2>Вы отгадали 3 ответа из 10</h2>
-      <button>Попробовать снова</button>
+      <h2> You answered {correct} question(s) out of {questions.length} correctly</h2>
+      
+      <a href='/'><button>Try again</button></a>
     </div>
   );
 }
 
-function Game() {
+function Game({step,question,onClickVariant}) {
+  const percentStep = Math.round((step/questions.length)*100);
+  console.log(percentStep);
   return (
     <>
       <div className="progress">
-        <div style={{ width: '50%' }} className="progress__inner"></div>
+        <div style={{ width: `${percentStep}%` }} className="progress__inner"></div> 
       </div>
-      <h1>Что такое useState?</h1>
+      <h1>{question.title}</h1>
       <ul>
-        <li>Это функция для хранения данных компонента</li>
-        <li>Это глобальный стейт</li>
-        <li>Это когда на ты никому не нужен</li>
+        {
+          question.variants.map((text,index) => 
+            (
+            <li onClick={() => onClickVariant(index)} key={text}>
+              {text}
+            </li>
+            ))
+        }
       </ul>
     </>
   );
 }
 
 function App() {
+  const[step,setStep] = React.useState(0);
+  const question = questions[step];
+
+  const [correct, setCorrect] = React.useState(0);
+
+  const onClickVariant = (index) => {
+    console.log(step,index);
+    setStep(step+1);
+
+    if (index === question.correct) {
+      setCorrect(correct+1);
+    }
+  }
   return (
+    
     <div className="App">
-      <Game />
-      {/* <Result /> */}
+      {
+        step !== questions.length ? (<Game step={step} question={question} onClickVariant={onClickVariant}/>) : (<Result correct={correct} />) 
+      }
+      
     </div>
   );
 }
