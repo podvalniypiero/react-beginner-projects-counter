@@ -3,28 +3,51 @@ import { Block } from './Block';
 import './index.scss';
 
 function App() {
-  const [fromCurrency, setFromCurrency] = React.useState('RUB');
-  const [toCurrency, setToCurrency] = React.useState('USD');
-  const [Valute,setValute] = React.useState({});
+  const [fromCurrency, setFromCurrency] = React.useState('USD');
+  const [toCurrency, setToCurrency] = React.useState('RUB');
+  const [fromPrice, setFromPrice] = React.useState(0);
+  const [toPrice, setToPrice] = React.useState(0);
+
+  const [rates, setRates] = React.useState({});
 
   React.useEffect(() => {
-    fetch('https://www.cbr-xml-daily.ru/daily_json.js')
+    fetch('https://open.er-api.com/v6/latest/USD')
     .then(res => res.json())
     .then((json)=> {
-      setValute(json.Valute);
-      console.log(json.Valute);
+      setRates(json.rates);
+      console.log(json.rates);
 
     })
     .catch(err => {
       console.log(err);
       alert('Error! No data from server...')
     })
-  },[])
+  },[]);
+
+  const onChangeFromPrice = (value) => {
+    const price =  (value / rates[fromCurrency]).toFixed(2);
+    const result = price * rates[toCurrency];
+    setToPrice(result);
+    setFromPrice(value);
+    
+  };
+
+  const onChangeToPrice = (value) => {
+    setToPrice(value);
+  };
 
   return (
     <div className="App">
-      <Block value={0} currency={fromCurrency} onChangeCurrency={setFromCurrency} />
-      <Block value={0} currency={toCurrency} onChangeCurrency={setToCurrency} />
+
+      <Block value = {fromPrice} 
+      currency = {fromCurrency} 
+      onChangeCurrency = {setFromCurrency} 
+      onChangeValue = {onChangeFromPrice}/>
+      
+      <Block value = {toPrice} 
+      currency = {toCurrency} 
+      onChangeCurrency = {setToCurrency} 
+      onChangeValue = {onChangeToPrice} />
       
     </div>
   );
