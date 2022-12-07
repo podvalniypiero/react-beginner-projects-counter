@@ -8,13 +8,15 @@ function App() {
   const [fromPrice, setFromPrice] = React.useState(0);
   const [toPrice, setToPrice] = React.useState(1);
 
-  const [rates, setRates] = React.useState({});
+  //const [rates, setRates] = React.useState({});
+  const ratesRef = React.useRef({});
 
   React.useEffect(() => {
     fetch('https://open.er-api.com/v6/latest/USD')
     .then(res => res.json())
     .then((json)=> {
-      setRates(json.rates); // async func due to state 
+      // setRates(json.rates); // async func due to state 
+      ratesRef.current = json.rates;
       onChangeToPrice(1);
 
     })
@@ -25,15 +27,15 @@ function App() {
   },[]);
 
   const onChangeFromPrice = (value) => {
-    const price =  (value / rates[fromCurrency]).toFixed(2);
-    const result = price * rates[toCurrency];
+    const price =  (value / ratesRef.current[fromCurrency]).toFixed(2);
+    const result = price * ratesRef.current[toCurrency];
     setToPrice(result);
     setFromPrice(value);
     
   };
 
   const onChangeToPrice = (value) => {
-    const result = (rates[fromCurrency]/rates[toCurrency]) * value;
+    const result = (ratesRef.current[fromCurrency]/ratesRef.current[toCurrency]) * value;
     setFromPrice(result);
     setToPrice(value);
   };
