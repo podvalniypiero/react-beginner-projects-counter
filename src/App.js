@@ -3,10 +3,10 @@ import { Block } from './Block';
 import './index.scss';
 
 function App() {
-  const [fromCurrency, setFromCurrency] = React.useState('USD');
-  const [toCurrency, setToCurrency] = React.useState('RUB');
+  const [fromCurrency, setFromCurrency] = React.useState('RUB');
+  const [toCurrency, setToCurrency] = React.useState('USD');
   const [fromPrice, setFromPrice] = React.useState(0);
-  const [toPrice, setToPrice] = React.useState(0);
+  const [toPrice, setToPrice] = React.useState(1);
 
   const [rates, setRates] = React.useState({});
 
@@ -14,8 +14,8 @@ function App() {
     fetch('https://open.er-api.com/v6/latest/USD')
     .then(res => res.json())
     .then((json)=> {
-      setRates(json.rates);
-      console.log(json.rates);
+      setRates(json.rates); // async func due to state 
+      onChangeToPrice(1);
 
     })
     .catch(err => {
@@ -38,17 +38,25 @@ function App() {
     setToPrice(value);
   };
 
- const onChangeFromCurrency = (cur) => {
-  setFromCurrency(cur);
-  onChangeFromPrice(fromPrice);
- }
+//  const onChangeFromCurrency = (cur) => {
+//   setFromCurrency(cur);
+//   onChangeFromPrice(fromPrice);
+//  }
+
+    React.useEffect(() => {
+      onChangeFromPrice(fromPrice)
+    }, [fromCurrency]);
+
+    React.useEffect(() => {
+      onChangeToPrice(toPrice)
+    }, [toCurrency]);
 
   return (
     <div className="App">
 
       <Block value = {fromPrice} 
       currency = {fromCurrency} 
-      onChangeCurrency = {onChangeFromCurrency} 
+      onChangeCurrency = {setFromCurrency} 
       onChangeValue = {onChangeFromPrice}/>
       
       <Block value = {toPrice} 
