@@ -1,6 +1,9 @@
 
 import React from 'react';
-import { useState,useEffect } from 'react';
+
+import { useState } from 'react';
+import { useEffect } from 'react';
+
 import { Collection } from './Collection';
 import './index.scss';
 
@@ -9,19 +12,22 @@ import './index.scss';
 function App() {
   const [searchValue, setSearchValue] = React.useState('');
   const [collections, setCollections] = React.useState([]);
+  
 
   React.useEffect(() => {
     fetch('https://63760f70b5f0e1eb85017e9f.mockapi.io/collections')
-    .then(res => res.json())
-    .then(json => {
+    .then((res) => res.json())
+    .then((json) => {
       setCollections(json); 
+      console.log(collections);
     })
 
-    .catch( err => {
+    .catch((err) => {
       console.warn(err);
       alert('Error! No data response from server...');
     });
-  }, []);
+
+  },[]);
 
   return (
     <div className="App">
@@ -39,9 +45,13 @@ function App() {
       </div>
       <div className="content">
 
-        { collections.map((obj,index) => (
+        { collections.filter((obj) =>{
+          return obj.name.toLowerCase().includes(searchValue.toLocaleLowerCase());  
+        })
+        .map((obj, index) => (
          <Collection key={index} name = {obj.name} images = {obj.photos} />
-        ))}
+        ))
+        }
         
       </div>
       <ul className="pagination">
